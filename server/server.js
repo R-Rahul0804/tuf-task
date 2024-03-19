@@ -1,15 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv'); dotenv.config();
-const sqlDB = require('./config/sqlConnection');
-const UserCode = require('./models/userCode');
+const db = require('./config/sqlConnection');
 const userCodeRoute = require('./routes/userCodeRoute');
 const app = express();
 
-sqlDB.sync();
+db.sync();
 const PORT = process.env.PORT;
 
-app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
 
 app.use('/api', userCodeRoute);
 

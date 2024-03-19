@@ -23,6 +23,10 @@ const UserCode = db.define('usercode',{
       sourcecode: {
         type: Sequelize.TEXT,
         allowNull: false,
+      },
+      output:{
+        type: Sequelize.TEXT,
+        allowNull: false,
       }
 });
 
