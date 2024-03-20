@@ -195,7 +195,7 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
         // Check if the submission is still processing
         if (response.data.status.id === 1 || response.data.status.id===2) { 
             // Wait for a certain period before making the next request
-            await new Promise(resolve => setTimeout(resolve, 5000));
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
     } while (response.data.status.id === 1 || response.data.status.id===2); 
     return response.data;
