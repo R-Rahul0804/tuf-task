@@ -193,9 +193,9 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
         response = await axios.request(options);
 
         // Check if the submission is still processing
-        if (response.data.status.id === 2) { 
+        if (response.data.status.id === 2 || response.data.status.id===1) { 
             // Wait for a certain period before making the next request
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 2000));
         }
     } while (response.data.status.id === 2); 
     return response.data;
