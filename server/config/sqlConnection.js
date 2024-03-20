@@ -1,9 +1,9 @@
 const sequelize = require('sequelize');
 const dotenv = require('dotenv'); dotenv.config();
 
-const db = new sequelize('sde-task', process.env.MYSQL_NAME, process.env.MYSQL_PASSWORD,{
+const db = new sequelize(process.env.MYSQL_DBNAME, process.env.MYSQL_NAME, process.env.MYSQL_PASSWORD,{
     dialect: 'mysql',
-    host: 'localhost',
+    host: process.env.MYSQL_HOST,
     logging: false
 });
 
