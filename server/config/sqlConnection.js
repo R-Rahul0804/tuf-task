@@ -1,5 +1,4 @@
 const sequelize = require('sequelize');
-//const {createClient} = require('redis');
 const dotenv = require('dotenv'); dotenv.config();
 
 const db = new sequelize('sde-task', process.env.MYSQL_NAME, process.env.MYSQL_PASSWORD,{

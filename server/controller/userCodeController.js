@@ -139,8 +139,8 @@ exports.runCode = async (req, res) => {
             headers: {
                 'content-type': 'application/json',
                 'Content-Type': 'application/json',
-                'X-RapidAPI-Key': '2903c1ea6dmsh69d7172a87928dcp18b991jsn4f9624e3df32',
-                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+                'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY,
+                'X-RapidAPI-Host': process.env.X_RAPIDAPI_HOST
             },
             data: {
                 language_id,
@@ -157,18 +157,6 @@ exports.runCode = async (req, res) => {
 
        // Return the submission details to the client
        res.status(200).json(submissionDetails);
-
-    //    const submissionDetailsResponse = await axios.get(`https://judge0-ce.p.rapidapi.com/submissions/${token}`,{
-    //     params: {
-    //         base64_encoded: 'true',
-    //         fields: '*'
-    //     },
-    //     headers: {
-    //         'X-RapidAPI-Key': '2903c1ea6dmsh69d7172a87928dcp18b991jsn4f9624e3df32',
-    //         'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-    //     }
-    //    });
-    //     res.status(200).json(submissionDetailsResponse.data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server Error' });
@@ -185,8 +173,8 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
             fields: '*'
         },
         headers: {
-            'X-RapidAPI-Key': '2903c1ea6dmsh69d7172a87928dcp18b991jsn4f9624e3df32',
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            'X-RapidAPI-Key': process.env.X_RAPIDAPI_KEY,
+            'X-RapidAPI-Host': process.env.X_RAPIDAPI_HOST
         }
     };
 
@@ -207,31 +195,7 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
 }
 
 
-exports.getSubmissionDetails = async (req, res) => {
-    try {
-        //const { submissionId } = req.params;
-        const token = req.session.submissionToken;
 
-        const options = {
-            method: 'GET',
-            url: `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
-            params: {
-                base64_encoded: 'true',
-                fields: '*'
-            },
-            headers: {
-                'X-RapidAPI-Key': '2903c1ea6dmsh69d7172a87928dcp18b991jsn4f9624e3df32',
-                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-            }
-        };
-
-        const response = await axios.request(options);
-        res.status(200).json(response.data);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server Error' });
-    }
-};
 
 
 

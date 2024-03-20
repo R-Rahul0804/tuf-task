@@ -6,12 +6,7 @@ import {toast} from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import {Base64} from 'js-base64';
 
-// const languageNames = {
-//     '53':'C++',
-//     '62':'Java',
-//     '63':'JavaScript',
-//     '71':'Python'
-// };
+
 const languageModes = {
     '53': 'cpp',
     '62': 'java',
