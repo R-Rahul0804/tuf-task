@@ -7,7 +7,8 @@ import {useGetUserCodeQuery} from '../slices/userCodeApiSlice';
 
 const UserCodePage = () => {
     const {data:usercode, isLoading, error } = useGetUserCodeQuery();
-    console.log(usercode);
+    const sortUserCode = usercode ? usercode.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+    //console.log(sortUserCode);
 
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
@@ -15,10 +16,13 @@ const UserCodePage = () => {
     };
   return (
     <>
-     <Link className='btn btn-light my-3' to='/'>
+     <Link className='btn btn-light my-3' variant='outline-danger' to='/'>
         Go Back
      </Link>
-     <h1>Submission Details</h1>
+     <div className='text-center'>
+         <h1>Submission Details</h1>
+     </div>
+     
      {isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :(
         <Table striped hover responsive className='table-sm'>
         <thead>
@@ -32,7 +36,7 @@ const UserCodePage = () => {
             </tr>
         </thead>
         <tbody>
-            {usercode.map((code)=>(
+            {sortUserCode.map((code)=>(
                 <tr key={code.id}>
                     <td>{code.username}</td>
                     <td>{code.codelanguage}</td>
@@ -41,7 +45,7 @@ const UserCodePage = () => {
                     <td>{code.output}</td>
                     <td>{formatTimestamp(code.createdAt)}</td>
                     <LinkContainer to={`/usercode/${code.id}`}>
-                    <Button className='btn-sm' variant='light'>
+                    <Button  variant='outline-danger'>
                         Details
                     </Button>
                      </LinkContainer>

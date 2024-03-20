@@ -10,6 +10,5 @@ router.get('/usercode/code/:id',userCodeController.getSingleUserCode);
 
 router.post('/usercode/runcode',userCodeController.runCode);
 
-router.get('/usercode/ans', userCodeController.getSubmissionDetails);
 
 module.exports = router;

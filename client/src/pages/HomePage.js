@@ -46,7 +46,7 @@ const HomePage = () => {
             const final_result = [compile_output,stdout].join("\n").trim();
             if(res.status.id === 11){
                 const stderr = decode(res.stderr);
-                console.log(stderr);
+                //console.log(stderr);
                 setOutput(stderr);
             }else{
                 setOutput(final_result);
@@ -65,18 +65,6 @@ const HomePage = () => {
         e.preventDefault();
         try {
             const formattedSourceCode = sourcecode.replace(/\n/g, '\\n');
-            if(!username){
-                toast.error("UserName field Can't be Empty");
-            }
-            if(!codelanguage){
-                toast.error("CodeLanguage field Can't be Empty");
-            }
-            if(!sourcecode){
-                toast.error("SourceCode field Can't be Empty");
-            }
-            if(!output){
-                toast.error("Output field Can't be Empty");
-            }
             const res = await createUserCode({
                 username,
                 codelanguage: languageModes[codelanguage],
@@ -84,18 +72,21 @@ const HomePage = () => {
                 sourcecode: formattedSourceCode,
                 output
             }).unwrap();
-            console.log(res);
+            //console.log(res);
             toast.success('Code Saved Successfully');
             navigate('/usercode');
         } catch (error) {
             console.error(error);
-            toast.error('Not Saved');
+            toast.error('All Fields Required');
         }
     };
 
   return (
     <>
+        <div className='text-center'>
         <h1>Enter Your Code and Details</h1>
+        </div>
+        
             <Row>
                 {/* <Col sm={6}> */}
                <Col md={2}>
@@ -122,10 +113,11 @@ const HomePage = () => {
             <div className="mb-3">
             <label htmlFor="sourcecode" className="form-label">SourceCode</label>
             <Editor
-              height="370px"
+              height="350px"
               language={languageModes[codelanguage]}
               value={sourcecode}
               onChange={(value, event) => setSourceCode(value)}
+              theme="vs-dark"
             />
           </div>
             </Col>
@@ -135,10 +127,12 @@ const HomePage = () => {
             <label htmlFor="output" className="form-label">Output</label>
             <textarea className="form-control" id="output" rows={5} value={output} readOnly />
           </div>
-          <Button onClick={runCode} variant="primary" className="mb-3">Run</Button>
-          <div className="text-center">
-            <Button onClick={submitHandler} variant="primary">Submit</Button>
-          </div>
+          <Button onClick={runCode} variant="outline-danger" className="mb-3">Run-Code</Button>
+          <div className="d-grid gap-2">
+              <Button onClick={submitHandler} variant="outline-danger" size="lg">
+                  Submit-Your-Code-Details
+              </Button>
+         </div>
             </Col>
             </Row>
     </> 

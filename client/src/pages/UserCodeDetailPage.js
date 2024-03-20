@@ -15,11 +15,14 @@ const UserCodeDetailPage = () => {
   const {id:userID} = useParams();
 
   const {data: usercode, isLoading, error} = useGetSingleUserCodeQuery(userID);
-  console.log(usercode);
+  //console.log(usercode);
 
   return isLoading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
     <>
-        <h1>{usercode.username} Submission</h1>
+        <div className='text-center'>
+           <h1>{usercode.username} Submission</h1>
+        </div>
+        
         <Row>
           <Col md={4}>
             <ListGroup variant='flush'>

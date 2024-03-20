@@ -26,30 +26,38 @@ exports.createUserCode = async(req,res)=>{
         }
 
         const newUserCode = await UserCode.create({username,codelanguage,stdin,sourcecode, output});
+
+        const allUserCode = await getAllUserCode();
         res.status(200).json(newUserCode);
+        redisClient.set("alldat", JSON.stringify(allUserCode));
+        redisClient.expire("alldat", 3600); // Set expiration time
     } catch (error) {
         console.error(error.message);
         res.status(500).json({message: 'Server Error'});
     }
 };
 
-const getAllUserCode = async()=>{
+const getAllUserCode = async(pageNumber,pageSize)=>{
     try {
-        let res = await UserCode.findAll();
-        let ans = res;
+        let res = await UserCode.findAll({
+            order: [['createdAt', 'DESC']],
+        });
+        let alldat = res;
         redisClient.set(
-            "ans",
-            JSON.stringify(ans)
+            "alldat",
+            JSON.stringify(alldat)
         );
-        redisClient.setex("ans", 3600, JSON.stringify(ans));
-        return ans;
+       redisClient.setex("alldat", 3600, JSON.stringify(alldat));
+       //console.log("Stored user codes in cache."); 
+        return res;
     } catch (e) {
+        console.error("Error retrieving user codes:", e.message);
         throw new Error(e);
     }
 }
 
 const checkCache = (req,res,next)=>{
-    redisClient.get("ans",(err,data)=>{
+    redisClient.get("alldat",(err,data)=>{
         if(err){
             return next(err);
         }
@@ -67,6 +75,7 @@ exports.getUserCode = async(req,res)=>{
     try {   
             checkCache(req,res,async()=>{
                 const usercode = await getAllUserCode();
+               // console.log("Number of records retrieved from database:", usercode.length);
                res.status(200).json(usercode);
             })   
     } catch (error) {
@@ -184,13 +193,11 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
         response = await axios.request(options);
 
         // Check if the submission is still processing
-        if (response.data.status.id === 2) { // Processing
-            // Wait for a certain period (e.g., 1 second) before making the next request
+        if (response.data.status.id === 2) { 
+            // Wait for a certain period before making the next request
             await new Promise(resolve => setTimeout(resolve, 1000));
         }
-    } while (response.data.status.id === 2); // Continue polling until the status changes
-
-    // Once the status changes, return the final response
+    } while (response.data.status.id === 2); 
     return response.data;
 }
 
