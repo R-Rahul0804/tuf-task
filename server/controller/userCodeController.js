@@ -197,7 +197,7 @@ async function fetchSubmissionDetailsWithLongPolling(token) {
             // Wait for a certain period before making the next request
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
-    } while (response.data.status.id === 2); 
+    } while (response.data.status.id === 1 || response.data.status.id===2); 
     return response.data;
 }
 
